@@ -356,6 +356,15 @@ TEST(NodeTest, ConstInteratorOnSequence) {
   EXPECT_EQ(3, count);
 }
 
+#if __cplusplus >= 201703L
+TEST(NodeTest, StdStringViewAsKey) {
+  Node node;
+  std::string_view key = "username";
+  node[key] = "monkey";
+  EXPECT_EQ("monkey", node[key].as<std::string>());
+}
+#endif
+
 TEST(NodeTest, SimpleSubkeys) {
   Node node;
   node["device"]["udid"] = "12345";
@@ -840,5 +849,17 @@ TEST_F(NodeEmitterTest, NestFlowMapListNode) {
 
   ExpectOutput("{position: [1.5, 2.25, 3.125]}", mapNode);
 }
+
+TEST_F(NodeEmitterTest, RobustAgainstLocale) {
+  std::locale::global(std::locale(""));
+  Node node;
+  node.push_back(1.5);
+  node.push_back(2.25);
+  node.push_back(3.125);
+  node.push_back(123456789);
+
+  ExpectOutput("- 1.5\n- 2.25\n- 3.125\n- 123456789", node);
+}
+
 }
 }
