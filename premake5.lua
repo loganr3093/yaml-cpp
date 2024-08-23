@@ -2,14 +2,13 @@ project "yaml-cpp"
 	kind "StaticLib"
 	language "C++"
 
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+	targetdir ("bin/" .. OutputDir .. "/%{prj.name}")
+	objdir ("bin-int/" .. OutputDir .. "/%{prj.name}")
 
 	files
 	{
 		"src/**.h",
 		"src/**.cpp",
-		
 		"include/**.h"
 	}
 
@@ -25,14 +24,14 @@ project "yaml-cpp"
 
 	filter "system:windows"
 		systemversion "latest"
-		cppdialect "C++17"
-		staticruntime "off"
+		cppdialect "C++20"
+		staticruntime "On"
 
 	filter "system:linux"
 		pic "On"
 		systemversion "latest"
-		cppdialect "C++17"
-		staticruntime "off"
+		cppdialect "C++20"
+		staticruntime "On"
 
 	filter "configurations:Debug"
 		runtime "Debug"
